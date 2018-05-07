@@ -5,6 +5,7 @@ import theme, {colors} from './theme';
 import * as stores from './stores';
 import {injectGlobal} from "styled-components";
 import ColorPicker from "./components/ColorPicker";
+import Canvas from './components/Canvas';
 
 class App extends Component {
   constructor(){
@@ -24,7 +25,7 @@ class App extends Component {
               <ColorPicker/>
             </Box>
             <Box w={[1, 1/2, 2/3, 3/4, 4/5]} p={1}>
-              Canvas
+              <Canvas/>
             </Box>
           </Flex>
         </StateProvider>
