@@ -8,7 +8,7 @@ class ColorStore {
   }
 
   @action resetColor(){
-    this.currentColor = '#fff';
+    this.currentColor = '#000';
   }
 }
 

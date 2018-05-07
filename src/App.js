@@ -4,6 +4,7 @@ import {Provider as ThemeProvider, Flex, Box} from 'rebass';
 import theme, {colors} from './theme';
 import * as stores from './stores';
 import {injectGlobal} from "styled-components";
+import ColorPicker from "./components/ColorPicker";
 
 class App extends Component {
   constructor(){
@@ -20,7 +21,7 @@ class App extends Component {
         <StateProvider {...stores}>
           <Flex flexWrap={'wrap'}>
             <Box w={[1, 1/2, 1/3, 1/4, 1/5]} p={1}>
-              Information
+              <ColorPicker/>
             </Box>
             <Box w={[1, 1/2, 2/3, 3/4, 4/5]} p={1}>
               Canvas
