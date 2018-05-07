@@ -27,15 +27,6 @@ export default class Canvas extends React.Component{
     return canvasSize/numPixels;
   }
 
-  // getPixelPosition(row, col){
-  //   /*
-  //   Given a row and a column,
-  //   return the x,y tuple corresponding
-  //   to the position of the pixel on the canvas
-  //    */
-  //   return (row)
-  // }
-
   resizeCanvas(){
     /*
     Ensure canvas is a square
