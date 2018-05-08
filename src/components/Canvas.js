@@ -56,9 +56,11 @@ export default class Canvas extends React.Component{
     const canvas = this.getCanvas();
     const getPixelCoord = () => {
       const pixelSize = this.getPixelSize();
-      // This assumes the grid is square. Will need to change if that becomes not the case.
-      const xCoord = e.clientX - canvas.offsetLeft;
-      const yCoord = e.clientY - canvas.offsetTop;
+      const rect = canvas.getBoundingClientRect();
+      const scaleX = canvas.width / rect.width;
+      const scaleY = canvas.height / rect.height;
+      const xCoord = (e.clientX - rect.left) * scaleX;
+      const yCoord = (e.clientY - rect.top) * scaleY;
       return {x: Math.floor(xCoord/pixelSize), y: Math.floor(yCoord/pixelSize)};
     };
 

@@ -1,14 +1,16 @@
 import {observable, action} from 'mobx';
 
+const NUM_PIXELS = 32;
+
 class PixelStore {
   @observable grid;
 
   @action resetGrid(){
     const color = '#fff';
     this.grid = [];
-    for (let x=0; x < 64; x++){
+    for (let x=0; x < NUM_PIXELS; x++){
       this.grid.push([]);
-      for (let y=0; y < 64; y++){
+      for (let y=0; y < NUM_PIXELS; y++){
         this.grid[x].push(color);
       }
     }
