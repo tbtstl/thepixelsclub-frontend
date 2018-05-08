@@ -28,6 +28,22 @@ export default class Canvas extends React.Component{
     return canvasSize/numPixels;
   }
 
+  getActivePixelCoord(e){
+    const canvas = this.getCanvas();
+    const pixelSize = this.getPixelSize();
+    const rect = canvas.getBoundingClientRect();
+    const scaleX = canvas.width / rect.width;
+    const scaleY = canvas.height / rect.height;
+    const xCoord = (e.clientX - rect.left) * scaleX;
+    const yCoord = (e.clientY - rect.top) * scaleY;
+    return {x: Math.floor(xCoord/pixelSize), y: Math.floor(yCoord/pixelSize)};
+  }
+
+  subscribeCanvasListeners(){
+    const canvas = this.getCanvas();
+    canvas.addEventListener('mousemove', this.handleCanvasHover.bind(this))
+  }
+
   resizeCanvas(){
     /*
     Ensure canvas is a square
@@ -42,6 +58,7 @@ export default class Canvas extends React.Component{
     this.props.pixelStore.resetGrid();
     this.resizeCanvas();
     this.renderPixels();
+    this.subscribeCanvasListeners();
   }
 
   componentDidUpdate(prevProps){
@@ -54,21 +71,15 @@ export default class Canvas extends React.Component{
   }
 
   handleCanvasClick(e){
-    const canvas = this.getCanvas();
-    const getPixelCoord = () => {
-      const pixelSize = this.getPixelSize();
-      const rect = canvas.getBoundingClientRect();
-      const scaleX = canvas.width / rect.width;
-      const scaleY = canvas.height / rect.height;
-      const xCoord = (e.clientX - rect.left) * scaleX;
-      const yCoord = (e.clientY - rect.top) * scaleY;
-      return {x: Math.floor(xCoord/pixelSize), y: Math.floor(yCoord/pixelSize)};
-    };
-
-    const pixel = getPixelCoord();
     const {currentColor} = this.props.colorStore;
-
+    const pixel = this.getActivePixelCoord(e);
     this.props.pixelStore.changePixel(currentColor, pixel.x, pixel.y);
+  }
+
+  handleCanvasHover(e){
+    const {currentColor} = this.props.colorStore;
+    const pixel = this.getActivePixelCoord(e);
+    this.props.pixelStore.hoverPixel(currentColor, pixel.x, pixel.y);
   }
 
   renderPixels(){
