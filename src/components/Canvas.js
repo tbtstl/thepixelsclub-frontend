@@ -3,6 +3,7 @@ import {inject, observer} from 'mobx-react';
 import {Flex, Box} from 'rebass';
 
 @inject('pixelStore')
+@inject('colorStore')
 @observer
 export default class Canvas extends React.Component{
   constructor(props){
@@ -65,7 +66,9 @@ export default class Canvas extends React.Component{
     };
 
     const pixel = getPixelCoord();
-    this.props.pixelStore.changePixel('#4ef', pixel.x, pixel.y);
+    const {currentColor} = this.props.colorStore;
+
+    this.props.pixelStore.changePixel(currentColor, pixel.x, pixel.y);
   }
 
   renderPixels(){
