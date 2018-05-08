@@ -46,9 +46,24 @@ export default class Canvas extends React.Component{
   componentDidUpdate(prevProps){
     const {oldGrid} = prevProps.pixelStore.grid;
     const {grid} = this.props.pixelStore;
-    if(!oldGrid.equals(grid)){
-      this.renderCanvas();
+    if(oldGrid && oldGrid.equals(grid)){
+      return;
     }
+    this.renderPixels();
+  }
+
+  handleCanvasClick(e){
+    const canvas = this.getCanvas();
+    const getPixelCoord = () => {
+      const pixelSize = this.getPixelSize();
+      // This assumes the grid is square. Will need to change if that becomes not the case.
+      const xCoord = e.clientX - canvas.offsetLeft;
+      const yCoord = e.clientY - canvas.offsetTop;
+      return {x: Math.floor(xCoord/pixelSize), y: Math.floor(yCoord/pixelSize)};
+    };
+
+    const pixel = getPixelCoord();
+    this.props.pixelStore.changePixel('#4ef', pixel.x, pixel.y);
   }
 
   renderPixels(){
@@ -70,10 +85,16 @@ export default class Canvas extends React.Component{
   }
 
  render(){
+    const _ = this.props.pixelStore.grid; // eslint-disable-line no-unused-vars
    return (
      <Flex alignItems={'center'}>
        <Box m={'auto'} w={1}>
-         <canvas ref={this.canvas} style={{height: '100%', width: '100%', maxHeight: '90vh'}} height={'100%'} width={'100%'}/>
+         <canvas
+           onClick={this.handleCanvasClick.bind(this)}
+           ref={this.canvas}
+           style={{height: '100%', width: '100%', maxHeight: '90vh'}}
+           height={'100%'}
+           width={'100%'}/>
        </Box>
      </Flex>
    )

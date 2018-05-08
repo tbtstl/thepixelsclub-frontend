@@ -13,6 +13,12 @@ class PixelStore {
       }
     }
   }
+
+  @action changePixel(color, x, y){
+    const newGrid = JSON.parse(JSON.stringify(this.grid));
+    newGrid[x][y] = color;
+    this.grid = newGrid;
+  }
 }
 
 export default new PixelStore();
