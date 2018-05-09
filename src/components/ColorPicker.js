@@ -50,7 +50,10 @@ export default class ColorPicker extends React.Component {
   }
 
   handlePreviousColorClick(color){
-    return () => this.handleColorChange({hex: color});
+    return () => {
+      this.handleColorChange({hex: color});
+      this.props.colorStore.addToPreviousColors(color);
+    }
   }
 
   render (){

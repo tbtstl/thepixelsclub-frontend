@@ -68,7 +68,8 @@ export default class Canvas extends React.Component{
   }
 
   handleCanvasClick(e){
-    const {currentColor} = this.props.colorStore;
+    const {currentColor, addToPreviousColors} = this.props.colorStore;
+    addToPreviousColors(currentColor);
     const pixel = this.getActivePixelCoord(e);
     this.cable.current.perform('receive', {x: pixel.x, y: pixel.y, color: currentColor});
     this.props.pixelStore.changePixel(currentColor, pixel.x, pixel.y);

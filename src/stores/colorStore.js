@@ -6,6 +6,9 @@ class ColorStore {
 
   @action setColor(color){
     this.currentColor = color;
+  }
+
+  @action.bound addToPreviousColors(color){
     const previousColors = [...this.previousColors];
 
     if (previousColors.includes(color)) {
@@ -15,10 +18,6 @@ class ColorStore {
     previousColors.unshift(color);
 
     this.previousColors = previousColors;
-
-    // if(this.previousColors.length > 10){
-    //   this.previousColors.splice(-1,1);
-    // }
   }
 
   @action resetColor(){
