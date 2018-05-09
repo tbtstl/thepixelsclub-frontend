@@ -10,6 +10,7 @@ export default class Canvas extends React.Component{
   constructor(props){
     super(props);
     this.canvas = React.createRef();
+    this.cable = React.createRef();
   }
 
   getCanvas(){
@@ -69,6 +70,7 @@ export default class Canvas extends React.Component{
   handleCanvasClick(e){
     const {currentColor} = this.props.colorStore;
     const pixel = this.getActivePixelCoord(e);
+    this.cable.current.perform('receive', {x: pixel.x, y: pixel.y, color: currentColor});
     this.props.pixelStore.changePixel(currentColor, pixel.x, pixel.y);
   }
 
@@ -104,7 +106,10 @@ export default class Canvas extends React.Component{
     const _ = this.props.pixelStore.grid; // eslint-disable-line no-unused-vars
    return (
      <Flex alignItems={'center'}>
-       <ActionCable channel={{channel: 'PixelsChannel'}} onReceived={this.handleChannelMessageReceive.bind(this)}/>
+       <ActionCable
+         ref={this.cable}
+         channel={{channel: 'PixelsChannel'}}
+         onReceived={this.handleChannelMessageReceive.bind(this)}/>
        <Box m={'auto'} w={1}>
          {this.props.pixelStore.grid ? (
            <canvas
