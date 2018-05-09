@@ -1,6 +1,7 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
 import {Flex, Box} from 'rebass';
+import {ActionCable} from 'react-actioncable-provider';
 
 @inject('pixelStore')
 @inject('colorStore')
@@ -104,6 +105,7 @@ export default class Canvas extends React.Component{
     const _ = this.props.pixelStore.grid; // eslint-disable-line no-unused-vars
    return (
      <Flex alignItems={'center'}>
+       <ActionCable channel={{channel: 'PixelsChannel'}} onReceived={(m)=>console.log(m)}/>
        <Box m={'auto'} w={1}>
          <canvas
            onClick={this.handleCanvasClick.bind(this)}
