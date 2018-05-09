@@ -46,17 +46,21 @@ class PixelStore {
   }
 
   @action hoverPixel(color, x, y){
-    const newGrid = JSON.parse(JSON.stringify(this.grid));
-    if(this.activePixel && this.activePixel.x === x && this.activePixel.y === y){
+    try {
+      const newGrid = JSON.parse(JSON.stringify(this.grid));
+      if(this.activePixel && this.activePixel.x === x && this.activePixel.y === y){
+        return;
+      }
+      if(this.activePixel){
+        newGrid[this.activePixel.x][this.activePixel.y] = this.activePixel.originalColor
+      }
+      this.setActivePixel(x, y, this.grid[x][y]);
+      const blendedColor = blendColor(color, this.grid[x][y], 25);
+      newGrid[x][y] = blendedColor;
+      this.grid = newGrid;
+    } catch(TypeError){
       return;
     }
-    if(this.activePixel){
-      newGrid[this.activePixel.x][this.activePixel.y] = this.activePixel.originalColor
-    }
-    this.setActivePixel(x, y, this.grid[x][y]);
-    const blendedColor = blendColor(color, this.grid[x][y], 25);
-    newGrid[x][y] = blendedColor;
-    this.grid = newGrid;
   }
 }
 
