@@ -1,6 +1,6 @@
 import * as React from 'react';
 import {inject, observer} from 'mobx-react';
-import {Flex, Box} from 'rebass';
+import {Flex, Box, Text} from 'rebass';
 import {ActionCable} from 'react-actioncable-provider';
 
 @inject('pixelStore')
@@ -55,20 +55,15 @@ export default class Canvas extends React.Component{
     canvas.setAttribute('height', size);
   }
 
-  componentDidMount(){
-    this.props.pixelStore.resetGrid();
-    this.resizeCanvas();
-    this.renderPixels();
-    this.subscribeCanvasListeners();
-  }
-
   componentDidUpdate(prevProps){
     const {oldGrid} = prevProps.pixelStore.grid;
     const {grid} = this.props.pixelStore;
     if(oldGrid && oldGrid.equals(grid)){
       return;
     }
+    this.resizeCanvas();
     this.renderPixels();
+    this.subscribeCanvasListeners();
   }
 
   handleCanvasClick(e){
@@ -101,18 +96,26 @@ export default class Canvas extends React.Component{
     }
   }
 
+  handleChannelMessageReceive(msg){
+    this.props.pixelStore.onPixelChannelMessageReceive(msg);
+  }
+
  render(){
     const _ = this.props.pixelStore.grid; // eslint-disable-line no-unused-vars
    return (
      <Flex alignItems={'center'}>
-       <ActionCable channel={{channel: 'PixelsChannel'}} onReceived={(m)=>console.log(m)}/>
+       <ActionCable channel={{channel: 'PixelsChannel'}} onReceived={this.handleChannelMessageReceive.bind(this)}/>
        <Box m={'auto'} w={1}>
-         <canvas
-           onClick={this.handleCanvasClick.bind(this)}
-           ref={this.canvas}
-           style={{height: '100%', width: '100%', maxHeight: '90vh'}}
-           height={'100%'}
-           width={'100%'}/>
+         {this.props.pixelStore.grid ? (
+           <canvas
+             onClick={this.handleCanvasClick.bind(this)}
+             ref={this.canvas}
+             style={{height: '100%', width: '100%', maxHeight: '90vh'}}
+             height={'100%'}
+             width={'100%'}/>
+         ) : (
+           <Text>Loading Canvas...</Text>
+         )}
        </Box>
      </Flex>
    )

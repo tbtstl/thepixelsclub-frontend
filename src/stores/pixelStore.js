@@ -7,6 +7,12 @@ class PixelStore {
   @observable grid;
   @observable activePixel;
 
+  @action onPixelChannelMessageReceive(msg){
+    if (msg && msg.canvas) {
+      this.setGrid(msg.canvas)
+    }
+  }
+
   @action resetGrid(){
     const color = '#ffffff';
     this.grid = [];
@@ -15,6 +21,14 @@ class PixelStore {
       for (let y=0; y < NUM_PIXELS; y++){
         this.grid[x].push(color);
       }
+    }
+  }
+
+  @action setGrid(msg){
+    try {
+      this.grid = JSON.parse(msg.pixels);
+    } catch (SyntaxError) {
+      this.resetGrid();
     }
   }
 

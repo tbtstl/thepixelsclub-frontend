@@ -20,7 +20,7 @@ class App extends Component {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <ActionCableProvider url={process.env.REACT_APP_ACTION_CABLE_URL || 'ws://localhost:3300/cable'}>
+        <ActionCableProvider url={process.env.REACT_APP_ACTION_CABLE_URL}>
           <StateProvider {...stores}>
             <Flex flexWrap={'wrap'}>
               <Box w={[1, 1/2, 1/3, 1/4, 1/5]} p={1}>
