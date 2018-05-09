@@ -13,6 +13,14 @@ export default class Canvas extends React.Component{
     this.cable = React.createRef();
   }
 
+  componentWillMount(){
+    window.addEventListener('resize', () => {
+      if(this.getCanvas()){
+        this.refreshCanvas();
+      }
+    });
+  }
+
   getCanvas(){
     return this.canvas.current;
   }
@@ -56,15 +64,19 @@ export default class Canvas extends React.Component{
     canvas.setAttribute('height', size);
   }
 
+  refreshCanvas(){
+    this.resizeCanvas();
+    this.renderPixels();
+    this.subscribeCanvasListeners();
+  }
+
   componentDidUpdate(prevProps){
     const {oldGrid} = prevProps.pixelStore.grid;
     const {grid} = this.props.pixelStore;
     if(oldGrid && oldGrid.equals(grid)){
       return;
     }
-    this.resizeCanvas();
-    this.renderPixels();
-    this.subscribeCanvasListeners();
+    this.refreshCanvas();
   }
 
   handleCanvasClick(e){
