@@ -64,7 +64,7 @@ export default class ColorPicker extends React.Component {
         <Text>The Pixels .Club is a public pixel canvas. To participate, select a color below and place your pixels on the artboard </Text>
         <Divider/>
         <Flex flexWrap={'wrap'}>
-          <Box w={[1, 1/2, 1/3, 1/4]}>
+          <Box w={1}>
             <Button onClick={this.handleDisplayClick.bind(this)}>Select a Color</Button>
             { this.state.displayColorPicker ? (
               <Popover>
@@ -80,7 +80,11 @@ export default class ColorPicker extends React.Component {
                 bg={c}>{currentColor === c ? 'A' : ''}</Circle>
             </Box>
           ))}
-
+          {previousColors.length === 0 && (
+            <Box my={1}>
+              <Circle bg={'white'}/>
+            </Box>
+          )}
         </Flex>
       </Panel>
     )
