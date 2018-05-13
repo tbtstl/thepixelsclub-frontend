@@ -28,7 +28,6 @@ export default class Canvas extends React.Component{
   getCanvasSize(){
     const canvas = this.getCanvas();
     const canvasContainerSize = canvas.parentElement.getBoundingClientRect();
-    console.log('ccs', canvasContainerSize.width, 'wih', window.innerHeight*.9)
     return Math.min(canvasContainerSize.width, window.innerHeight*.9);
   }
 
